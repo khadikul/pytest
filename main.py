@@ -11,7 +11,6 @@ class EmailScraper:
     def __init__(self, country, category):
         self.country = country
         self.category = category
-        self.mailsgroup = []
         self.emails = []
 
     def build_url(self, start):
@@ -57,18 +56,15 @@ class EmailScraper:
             email_pattern = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
 
             for email in re.finditer(email_pattern, html):
-                self.mailsgroup.append(email.group())
+                self.emails.append(email.group())
 
             # If no emails are found on the page, break the loop
-            if not self.mailsgroup:
+            if not self.emails:
                 use_headless = False
                 print('Something With Wrong')
                 print('Email Extract End')
                 time.sleep(20)
                 break
-
-            for i, emai in enumerate(self.mailsgroup):
-                print(f'{i}| {emai}')
 
             # Increment the start parameter for the next page
             start += 10
@@ -78,8 +74,8 @@ class EmailScraper:
 
     def print_emails(self):
         # Print the valid emails
-        for email in self.emails:
-            print(email)
+        for i, email in enumerate(self.emails):
+            print(f'{i} {email}')
 
 
 if __name__ == "__main__":
